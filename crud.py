@@ -34,5 +34,11 @@ def register_user():
             break
         print("La contraseña no puede estar vacía.")
 
-    users[email] = {"name": name, "lastname": lastname, "password": password, "grades": {}}
+    while True:
+        role = input("Ingrese su rol (profesor/estudiante): ").strip().lower()
+        if role in ["profesor", "estudiante"]:
+            break
+        print("El rol debe ser 'profesor' o'estudiante'.")
+
+    users[email] = {"name": name, "lastname": lastname, "password": password, "role": role, "grades": {}}
     print("Usuario registrado con éxito.\n")
