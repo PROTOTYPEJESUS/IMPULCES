@@ -130,6 +130,39 @@ def view_grades(user_email):
     else:
         print("No hay notas registradas.")
 
+# MENU INTERNO        
+def internal_menu(user_email):
+    user = users[user_email]
+    
+    while True:
+        print(f"\n--- HOLA {user['name']} {user['lastname']} ({user['role'].upper()}) ---")
+        
+        if user["role"] == "profesor":
+            print("1. Agregar notas")
+            print("2. Ver notas de estudiantes")
+        else:
+            print("1. Ver mis notas")
+        
+        print("3. Cerrar sesión")
+
+        option = input("Elija una opción: ")
+
+        if option == "1":
+            if user["role"] == "profesor":
+                add_grades(user_email)  # ✅ Ahora se pasa el email del profesor
+            else:
+                view_grades(user_email)
+        elif option == "2" and user["role"] == "profesor":
+            email_student = input("Ingrese el correo del estudiante: ")
+            if email_student in users and users[email_student]["role"] == "estudiante":
+                view_grades(email_student)
+            else:
+                print("El usuario no es un estudiante registrado.")
+        elif option == "3":
+            print("Cerrando sesión...")
+            break
+        else:
+            print("Opción inválida. Intente nuevamente.")
 
 # LANZAR EL SISTEMA
 main_menu()
