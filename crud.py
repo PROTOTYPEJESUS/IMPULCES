@@ -4,7 +4,7 @@ users = {} # Diccionario para almacenar usuarios
 
 # FUNCION PARA REGISTRAR USUARIOS
 def register_user():
-    print("\n--- BIENVENIDO AL SISTEMA DE REGISTRO DE NOTAS DE IMPULCES ---")
+    print("\n--- REGISTRO DE USUARIO ---")
     
     while True:
         email = input("Ingrese correo electrónico: ").strip()
@@ -34,8 +34,22 @@ def register_user():
             break
         print("La contraseña no puede estar vacía.")
 
-    users[email] = {"name": name, "lastname": lastname, "password": password, "grades": {}}
+    while True:
+        role = input("Ingrese su rol (profesor/estudiante): ").strip().lower()
+        if role in ["profesor", "estudiante"]:
+            break
+        print("Rol inválido. Intente nuevamente.")
+
+    users[email] = {
+        "name": name,
+        "lastname": lastname,
+        "password": password,
+        "role": role,
+        "grades": {}  
+    }
+
     print("Usuario registrado con éxito.\n")
+
 
 # FUNCION PARA INICIAR SESION
 def login():
@@ -47,7 +61,8 @@ def login():
 
         if email in users and users[email]["password"] == password:
             print(f"Bienvenido, {users[email]['name']} {users[email]['lastname']}.\n")
-            return True  # Usuario autenticado y devuelve nombre completo
+            internal_menu(email)  # ✅ Ahora se pasa el email
+            return email  # ✅ Retorna el email autenticado
 
         print("Usuario o contraseña incorrectos. Intente nuevamente.\n")
 
@@ -90,8 +105,8 @@ users = {
         "password": "estudiante123",
         "role": "estudiante",
         "grades": {
-            "Matemáticas": 85,
-            "Historia": 90
+            "Matemáticas": 5,
+            "Historia": 4.5,
         }
     }
 }
@@ -149,7 +164,7 @@ def internal_menu(user_email):
 
         if option == "1":
             if user["role"] == "profesor":
-                add_grades(user_email)  # ✅ Ahora se pasa el email del profesor
+                add_grades()
             else:
                 view_grades(user_email)
         elif option == "2" and user["role"] == "profesor":
