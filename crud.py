@@ -75,5 +75,61 @@ def main_menu():
         else:
             print("Opción inválida. Intente nuevamente.\n")
 
+# Datos de prueba
+users = {
+    "profesor1@email.com": {
+        "name": "Carlos",
+        "lastname": "Gómez",
+        "password": "profesor123",
+        "role": "profesor",
+        "grades": {} 
+    },
+    "estudiante1@email.com": {
+        "name": "Ana",
+        "lastname": "Pérez",
+        "password": "estudiante123",
+        "role": "estudiante",
+        "grades": {
+            "Matemáticas": 85,
+            "Historia": 90
+        }
+    }
+}
+
+# FUNCION PARA AGREGAR NOTAS (Solo profesores)
+def add_grades():
+    print("\n--- AGREGAR NOTAS ---")
+
+    student_email = input("Ingrese el correo del estudiante: ").strip()
+    if student_email not in users or users[student_email]["role"] != "estudiante":
+        print("Este usuario no es un estudiante registrado.")
+        return
+
+    subject = input("Ingrese la materia: ").strip()
+    while True:
+        try:
+            grade = float(input("Ingrese la nota (0-5): ").strip())
+            if 0 <= grade <= 5:
+                break
+            else:
+                print("La nota debe estar entre 0 y 5.")
+        except ValueError:
+            print("Ingrese un número válido.")
+
+    users[student_email]["grades"][subject] = grade
+    print(f"Nota agregada exitosamente para {users[student_email]['name']}.")
+
+# FUNCION PARA VER NOTAS
+def view_grades(user_email):
+    user = users[user_email]
+    print(f"\n--- NOTAS DE {user['name']} {user['lastname']} ---")
+
+    if user["grades"]:
+        for subject, grade in user["grades"].items():
+            print(f"{subject}: {grade}")
+    else:
+        print("No hay notas registradas.")
+
+
 # LANZAR EL SISTEMA
 main_menu()
